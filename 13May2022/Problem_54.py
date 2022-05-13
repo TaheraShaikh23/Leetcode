@@ -2,35 +2,39 @@
 class Solution:
     def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
 #        O(m*n), O(n) 
-        res = []
-        left, right = 0, len(matrix[0])
-        top, bottom = 0, len(matrix)
+        height = len(matrix)
+        width = len(matrix[0])
         
-        while left < right and top < bottom:
-                #get every i in the top row 
-            for i in range(left, right):
-                res.append(matrix[top][i])
-                # print(res)
-            top +=1
-    
-            #get every i in the right col 
-            for i in range(top, bottom):
-                res.append(matrix[i][right - 1])
-            right -= 1
-                
-                
-            if not left < right and top < bottom:
-                break
-                
-            #get every i in the bottom row
-            for i in range(right - 1, left -1, -1):
-                res.append(matrix[bottom - 1][i])
+        top = 0
+        bottom = height - 1
+        left = 0
+        right = width - 1
+        
+        ans = []
+        while top < bottom and left < right:
+            for col in range(left, right):
+                ans.append(matrix[top][col])
+            
+            for row in range(top, bottom):
+                ans.append(matrix[row][right])
+            
+            for col in range(right, left, -1):
+                ans.append(matrix[bottom][col])
+            
+            for row in range(bottom, top, -1):
+                ans.append(matrix[row][left])
+            
+            top += 1
             bottom -= 1
-                
-            #get every i in the left col
-            for i in range(bottom - 1, top - 1, -1):
-                res. append(matrix[i][top - 1])
             left += 1
-        return res
+            right -= 1
+        
+        # If a matrix remain inside it is either a 1xn or a mx1
+        if len(ans) < height*width:
+            for row in range(top, bottom+1):
+                for col in range(left, right+1):
+                    ans.append(matrix[row][col])
+        
+        return ans
             
         
